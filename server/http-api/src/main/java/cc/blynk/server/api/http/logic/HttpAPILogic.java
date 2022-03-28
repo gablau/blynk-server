@@ -39,7 +39,6 @@ import cc.blynk.server.core.model.widgets.others.rtc.RTC;
 import cc.blynk.server.core.model.widgets.ui.tiles.DeviceTiles;
 import cc.blynk.server.core.processors.EventorProcessor;
 import cc.blynk.server.core.protocol.exceptions.IllegalCommandBodyException;
-import cc.blynk.server.core.protocol.exceptions.NoDataException;
 import cc.blynk.server.db.DBManager;
 import cc.blynk.server.notifications.mail.MailWrapper;
 import cc.blynk.server.notifications.push.GCMWrapper;
@@ -57,7 +56,6 @@ import java.util.AbstractMap;
 
 import static cc.blynk.core.http.Response.badRequest;
 import static cc.blynk.core.http.Response.ok;
-import static cc.blynk.core.http.Response.redirect;
 import static cc.blynk.server.core.protocol.enums.Command.HARDWARE;
 import static cc.blynk.server.core.protocol.enums.Command.HTTP_EMAIL;
 import static cc.blynk.server.core.protocol.enums.Command.HTTP_GET_HISTORY_DATA;
@@ -304,18 +302,19 @@ public class HttpAPILogic extends TokenBaseHttpHandler {
             return badRequest("Wrong pin format.");
         }
 
+        return badRequest("This API is no longer supported.");
         //todo may be optimized
-        try {
-            java.nio.file.Path path = reportingDao.csvGenerator.createCSV(
-                    user, dashId, deviceId, pinType, pin, deviceId);
-            return redirect("/" + path.getFileName().toString());
-        } catch (NoDataException | IllegalStateException noData) {
-            log.debug(noData.getMessage());
-            return badRequest(noData.getMessage());
-        } catch (Exception e) {
-            log.debug("Error getting pin data.", e);
-            return badRequest("Error getting pin data.");
-        }
+        //try {
+        //    java.nio.file.Path path = reportingDao.csvGenerator.createCSV(
+        //            user, dashId, deviceId, pinType, pin, deviceId);
+        //    return redirect("/" + path.getFileName().toString());
+        //} catch (NoDataException | IllegalStateException noData) {
+        //    log.debug(noData.getMessage());
+        //    return badRequest(noData.getMessage());
+        //} catch (Exception e) {
+        //    log.debug("Error getting pin data.", e);
+        //    return badRequest("Error getting pin data.");
+        //}
     }
 
     public Response updateWidgetProperty(String token,
