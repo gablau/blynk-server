@@ -204,7 +204,7 @@ public class FileManager {
             //so making sure user profile will be saved
             //this is not very important as profile will be updated by user anyway.
             user.lastModifiedTs = System.currentTimeMillis() + 10 * 1000;
-            log.info("Restored.", backupFile.getAbsoluteFile());
+            log.info("Restored {}.", backupFile.getAbsoluteFile());
             return Stream.of(user);
         } catch (Exception e) {
             //ignore
