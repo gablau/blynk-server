@@ -100,9 +100,8 @@ public class Holder {
                 serverProperties.getIntProperty("notifications.queue.limit", 2000)
         );
 
-        boolean enableDB = serverProperties.isDBEnabled();
-        this.dbManager = new DBManager(blockingIOProcessor, enableDB);
-        this.reportingDBManager = new ReportingDBManager(blockingIOProcessor, enableDB);
+        this.dbManager = new DBManager(blockingIOProcessor, serverProperties.isDBEnabled());
+        this.reportingDBManager = new ReportingDBManager(blockingIOProcessor, serverProperties.isReportingDBEnabled());
 
         if (restore) {
             try {
@@ -171,9 +170,9 @@ public class Holder {
         this.userDao = new UserDao(fileManager.deserializeUsers(), serverProperties.region, serverProperties.host);
         this.blockingIOProcessor = blockingIOProcessor;
 
-        boolean enableDB = serverProperties.isDBEnabled();
-        this.dbManager = new DBManager(dbFileName, blockingIOProcessor, enableDB);
-        this.reportingDBManager = new ReportingDBManager(dbFileName, blockingIOProcessor, enableDB);
+        this.dbManager = new DBManager(dbFileName, blockingIOProcessor, serverProperties.isDBEnabled());
+        this.reportingDBManager = new ReportingDBManager(
+                dbFileName, blockingIOProcessor, serverProperties.isReportingDBEnabled());
 
         this.tokenManager = new TokenManager(this.userDao.users, dbManager, serverProperties.host);
         this.stats = new GlobalStats();
