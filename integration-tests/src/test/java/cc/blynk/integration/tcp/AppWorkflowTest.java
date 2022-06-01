@@ -1,11 +1,14 @@
 package cc.blynk.integration.tcp;
 
 import cc.blynk.integration.SingleServerInstancePerTest;
+import cc.blynk.integration.model.tcp.TestAppClient;
 import cc.blynk.server.core.model.Profile;
 import cc.blynk.server.core.model.auth.App;
 import cc.blynk.server.core.model.enums.ProvisionType;
 import cc.blynk.server.core.model.enums.Theme;
 import cc.blynk.server.core.model.serialization.JsonParser;
+import cc.blynk.server.core.protocol.enums.Response;
+import cc.blynk.server.core.protocol.model.messages.ResponseMessage;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -135,5 +138,16 @@ public class AppWorkflowTest extends SingleServerInstancePerTest {
         assertNotNull(profile.apps);
         assertEquals(0, profile.apps.length);
         assertEquals(0, profile.dashBoards.length);
+    }
+
+    @Test
+    public void testDeleteUser() throws Exception {
+        clientPair.appClient.selfDelete();
+        clientPair.appClient.verifyResult(ok(1));
+
+        TestAppClient appClient = new TestAppClient("localhost", properties);
+        appClient.start();
+        appClient.login(getUserName(), "1","iOS", "1.10.2");
+        appClient.verifyResult(new ResponseMessage(1, Response.USER_NOT_REGISTERED));
     }
 }

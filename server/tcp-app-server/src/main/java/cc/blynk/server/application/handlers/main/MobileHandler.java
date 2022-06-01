@@ -61,6 +61,7 @@ import cc.blynk.server.common.BaseSimpleChannelInboundHandler;
 import cc.blynk.server.common.handlers.logic.PingLogic;
 import cc.blynk.server.core.protocol.model.messages.StringMessage;
 import cc.blynk.server.core.session.StateHolderBase;
+import cc.blynk.server.handlers.common.DeleteUserLogic;
 import io.netty.channel.ChannelHandlerContext;
 
 import static cc.blynk.server.core.protocol.enums.Command.ACTIVATE_DASHBOARD;
@@ -84,6 +85,7 @@ import static cc.blynk.server.core.protocol.enums.Command.DELETE_ENHANCED_GRAPH_
 import static cc.blynk.server.core.protocol.enums.Command.DELETE_REPORT;
 import static cc.blynk.server.core.protocol.enums.Command.DELETE_TAG;
 import static cc.blynk.server.core.protocol.enums.Command.DELETE_TILE_TEMPLATE;
+import static cc.blynk.server.core.protocol.enums.Command.DELETE_USER;
 import static cc.blynk.server.core.protocol.enums.Command.DELETE_WIDGET;
 import static cc.blynk.server.core.protocol.enums.Command.EMAIL;
 import static cc.blynk.server.core.protocol.enums.Command.EMAIL_QR;
@@ -141,6 +143,8 @@ public class MobileHandler extends BaseSimpleChannelInboundHandler<StringMessage
     private MobileMailQRsLogic mailQRsLogic;
     private MobileGetProjectByClonedTokenLogic getProjectByCloneCodeLogic;
 
+    private final DeleteUserLogic deleteUserLogic;
+
     public MobileHandler(Holder holder, MobileStateHolder state) {
         super(StringMessage.class);
         this.state = state;
@@ -148,6 +152,7 @@ public class MobileHandler extends BaseSimpleChannelInboundHandler<StringMessage
 
         this.hardwareLogic = new MobileHardwareLogic(holder, state.user.email);
         this.mobileAddPushLogic = new MobileAddPushLogic(holder);
+        this.deleteUserLogic = new DeleteUserLogic(holder);
     }
 
     @Override
@@ -237,6 +242,10 @@ public class MobileHandler extends BaseSimpleChannelInboundHandler<StringMessage
                 break;
             case GET_WIDGET :
                 MobileGetWidgetLogic.messageReceived(ctx, state, msg);
+                break;
+
+            case DELETE_USER :
+                deleteUserLogic.messageReceived(ctx, state.user, msg);
                 break;
 
             case CREATE_TILE_TEMPLATE :

@@ -23,6 +23,7 @@ import static cc.blynk.server.core.protocol.enums.Command.DELETE_ENHANCED_GRAPH_
 import static cc.blynk.server.core.protocol.enums.Command.DELETE_REPORT;
 import static cc.blynk.server.core.protocol.enums.Command.DELETE_TAG;
 import static cc.blynk.server.core.protocol.enums.Command.DELETE_TILE_TEMPLATE;
+import static cc.blynk.server.core.protocol.enums.Command.DELETE_USER;
 import static cc.blynk.server.core.protocol.enums.Command.DELETE_WIDGET;
 import static cc.blynk.server.core.protocol.enums.Command.EMAIL;
 import static cc.blynk.server.core.protocol.enums.Command.EMAIL_QR;
@@ -151,6 +152,9 @@ public final class CommandParserUtil {
                 return DELETE_WIDGET;
             case "getwidget" :
                 return GET_WIDGET;
+
+            case "deleteuser" :
+                return DELETE_USER;
 
             case "hardsync" :
                 return HARDWARE_SYNC;
